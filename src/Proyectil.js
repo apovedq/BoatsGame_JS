@@ -27,5 +27,7 @@ function Proyectil(x, y, dir) {
                 this.y = this.y + 2;
         }
     }
+
+    
 }
 

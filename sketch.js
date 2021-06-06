@@ -1,6 +1,7 @@
-
-
 let counter = 0;
+let FirstGameBoat = new Boat();
+let FirstGameProyectiles = [];
+let beach = new Beach();
 let intro = new Intro();
 let screenCounter = 0;
 //Pantalla 0 = titulo
@@ -13,17 +14,22 @@ function addCounter() {
   }
 }
 
+//Carga de imagenes.
 function preload() {
+  img1U = loadImage('assets/1UP.gif');
+  img1R = loadImage('assets/1RIGHT.gif');
+  img1D = loadImage('assets/1DOWN.gif');
+  img1L = loadImage('assets/1LEFT.gif');
   backGround = loadImage('assets/mar.gif');
   title = loadImage('assets/title.png');
   rocket = loadImage('assets/rocket.png');
   mainBoat = loadImage('assets/titleBoat.png');
   instructions = loadImage('assets/instrucciones.png');
+  obstacle = loadImage('assets/obstacle.png');
 }
 
 function setup() {
   createCanvas(1280, 720);
-
 }
 
 function draw() {
@@ -36,7 +42,6 @@ function draw() {
   addCounter();
   text(counter, 20, 50);
 
-  //intro
   switch (screenCounter) {
     //Introduccion
     case 0:
@@ -57,7 +62,7 @@ function draw() {
       break;
     //Inicio del juego
     case 2:
-      circle(50, 50, 50);
+      mainGame();
   }
 
 }
@@ -65,7 +70,7 @@ function draw() {
 //Funcion para cambio de pantalla
 function mousePressed() {
   startDisplay();
-  instructionsDisplay()
+  instructionsDisplay();
 }
 
 //Pasar de pantalla principal a instrucciones.
@@ -93,6 +98,26 @@ function  instructionsDisplay() {
     }
   }
 
+function mainGame() {
+  beach.showObstacle(obstacle, 500, 500, 200, 200);
+  beach.showObstacle(obstacle, 800, 100, 100, 100);
+      for (let i = 0; i < FirstGameProyectiles.length; i++) {
+        FirstGameProyectiles[i].show();
+        FirstGameProyectiles[i].move(FirstGameBoat);
+      }
+      FirstGameBoat.show();
+  FirstGameBoat.move();
+  FirstGameBoat.crash(500, 500);
+  FirstGameBoat.crash(800, 100);
+  console.log(mouseX, mouseY);
+
+}
+
+function mouseClicked() {
+      let obj = new Proyectil(FirstGameBoat.x + 100, FirstGameBoat.y + 100, FirstGameBoat.mode);
+  FirstGameProyectiles.push(obj);
+  console.log(FirstGameProyectiles.length);
+    }
   
 
 

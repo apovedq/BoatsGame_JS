@@ -1,8 +1,8 @@
 function Boat() {
-    this.x = 500;
-    this.y = 500;
+    this.x = -10;
+    this.y = 300;
 
-    this.mode = 0;
+    this.mode = 2;
 
     this.show = function () {
         fill(255, 255, 0);
@@ -22,7 +22,7 @@ function Boat() {
     }
     this.move = function () {
 
-        let speed = 6;
+        let speed = 3;
 
         //UP
 
@@ -66,6 +66,14 @@ function Boat() {
             img1L.reset();
         }
     }
+
+    this.crash = function (x,y) {
+        if (dist(this.x, this.y, x, y) < 150) {
+            this.x = -10;
+            this.y = 300;
+         }
+    }
+
 
 }
 
