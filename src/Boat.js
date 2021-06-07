@@ -1,7 +1,8 @@
 function Boat() {
-    this.x = -10;
+    this.x = 0;
     this.y = 300;
 
+    this.r = 50;
     this.mode = 2;
 
     this.show = function () {
@@ -67,15 +68,17 @@ function Boat() {
         }
     }
 
-    this.crash = function (x,y) {
-        if (dist(this.x, this.y, x, y) < 150) {
-            this.x = -10;
-            this.y = 300;
-         }
+    this.hits = function (Obstaculo) {
+        var d = dist(this.x, this.y, Obstaculo.x, Obstaculo.y);
+        if (d < this.r + Obstaculo.r) {
+            return true;
+        } else {
+            return false;
+        }
     }
+    this.crash = function () {
+        this.x = 0;
+        this.y = 300;
 
-
+    }
 }
-
-
-

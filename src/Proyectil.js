@@ -4,6 +4,7 @@ function Proyectil(x, y, dir) {
     this.y = y;
     this.r = 5;
     this.dir = dir;
+    this.bye = false;
 
     this.show = function () {
         noStroke();
@@ -27,7 +28,18 @@ function Proyectil(x, y, dir) {
                 this.y = this.y + 2;
         }
     }
+    this.hits = function (Obstaculo) {
+        let d = dist(this.x, this.y, Obstaculo.x+150, Obstaculo.y+150);
+        if (d < this.r + Obstaculo.r){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    this.gone = function () {
+        this.bye = true;
+    }
 
-    
+
 }
 

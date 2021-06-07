@@ -1,9 +1,6 @@
-class Beach {
+/* class Beach {
     
-    constructor() {
-        
-    }
-    
+
     showObstacle(img, x, y, width, height) {
         this.x = x;
         this.y = y;
@@ -17,4 +14,4 @@ class Beach {
     getY() {
         return this.y;
     }
-}
+} */
