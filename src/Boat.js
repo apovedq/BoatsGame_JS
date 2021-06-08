@@ -2,11 +2,11 @@ function Boat() {
     this.x = 0;
     this.y = 300;
 
-    this.r = 50;
+    this.r = 80;
     this.mode = 2;
 
     this.show = function () {
-        fill(255, 255, 0);
+        /* fill(255, 255, 0); */
         switch (this.mode) {
             case 0:
                 image(img1U, this.x, this.y);

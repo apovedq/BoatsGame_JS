@@ -3,7 +3,7 @@ class Obstaculo {
         this.x = x;
         this.y = y;
         this.img = img;
-        this.r = 125;
+        this.r = 85;
         /* this.height = height;
         this.width = width; */
 

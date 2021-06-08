@@ -1,32 +1,29 @@
-class Enemy {
-    constructor(y,x) {
-        this.y = y;
-        this.x = x;
+function Enemy() {
+        this.y = 0;
+        this.x = 0;
         this.dir = true;
-    }
     
-    display() {
+
+    this.show = function () {
         /*if (this.x > 0) { this.x++; }
         if (this.x < 1280) { this.x--;}*/
         circle(this.x, this.y, 100);
     }
-    
-    move() {
 
-        if (this.dir === true)
-        { this.x += 15; }
-        else
-        { this.x -= 15; }
+    this.move = function () {
+
+        if (this.dir === true) { this.x += 5; }
+        else { this.x -= 5; }
 
         if (this.x < 10) {
             this.dir = true;
         }
-        
+
         if (this.x > 1280) {
             this.dir = false;
-         }
+        }
     }
-    
-    getX() { return this.x; }
-    getY() { return this.y;}
+
+    /* getX() { return this.x; }
+    getY() { return this.y; } */
 }

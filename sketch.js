@@ -1,6 +1,8 @@
 let counter = 0;
 let FirstGameBoat = new Boat();
+let FirstGameEnemy = new Enemy();
 let FirstGameProyectiles = [];
+let FirstGameProyectilesEnemy = [];
 let obstaculos = [];
 //let beach = new Beach();
 let intro = new Intro();
@@ -107,6 +109,7 @@ function mainGame() {
   /* beach.showObstacle(obstacle, 500, 500, 200, 200);
   beach.showObstacle(obstacle, 800, 100, 100, 100); */
 
+  // Arreglos del proyectil del barco y sus funciones.
   for (let i = 0; i < FirstGameProyectiles.length; i++) {
     FirstGameProyectiles[i].show();
     FirstGameProyectiles[i].move(FirstGameBoat);
@@ -119,25 +122,47 @@ function mainGame() {
       FirstGameProyectiles.splice(i, 1);
     }
   }
+    
+  //Arreglo de Barco chocando con Isla.
+
   for (var j = 0; j < obstaculos.length; j++) {
     obstaculos[j].show();
     if (FirstGameBoat.hits(obstaculos[j])) {
       FirstGameBoat.crash();
     }
   }
+  // Arreglo del proyectil del enemigo y sus funciones.
 
-  FirstGameBoat.show();
-  FirstGameBoat.move();
-  //FirstGameBoat.crash(500, 500);
-  //FirstGameBoat.crash(800, 100);
-  console.log(mouseX, mouseY);
+  for (let e = 0; e < FirstGameProyectilesEnemy.length; e++) {
+    FirstGameProyectilesEnemy[e].show();
+    FirstGameProyectilesEnemy[e].move(FirstGameEnemy);
 
-}
-
+      if (FirstGameProyectilesEnemy[e].hits(FirstGameBoat)) {
+        FirstGameProyectilesEnemy[e].gone();
+      }
+      if (FirstGameProyectilesEnemy[e].bye) {
+        FirstGameProyectilesEnemy.splice(e, 1);
+      }
+    }
+    
+    FirstGameBoat.show();
+    FirstGameBoat.move();
+    FirstGameEnemy.show();
+    FirstGameEnemy.move();
+    //FirstGameBoat.crash(500, 500);
+    //FirstGameBoat.crash(800, 100);
+    console.log(mouseX, mouseY);
+  }
+  
+  
 function mouseClicked() {
   let obj = new Proyectil(FirstGameBoat.x + 100, FirstGameBoat.y + 100, FirstGameBoat.mode);
   FirstGameProyectiles.push(obj);
   console.log(FirstGameProyectiles.length);
+
+  let obj2 = new ProyectilEnemy(FirstGameEnemy.x, FirstGameEnemy.y);
+  FirstGameProyectilesEnemy.push(obj2);
+  console.log(FirstGameProyectilesEnemy.length);
 }
 
 
