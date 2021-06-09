@@ -5,6 +5,7 @@ function Enemy() {
     
 
     this.show = function () {
+        
         /*if (this.x > 0) { this.x++; }
         if (this.x < 1280) { this.x--;}*/
         circle(this.x, this.y, 100);
