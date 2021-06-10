@@ -7,6 +7,7 @@ let obstaculos = [];
 let intro = new Intro();
 let screenCounter = 0;
 let blueFlag = new BlueFlag();
+ let boatLive = 4;
 //Pantalla 0 = titulo
 //Pantalla 1 = instrucciones
 //Pantalla 2 = start;
@@ -29,6 +30,12 @@ function preload() {
   mainBoat = loadImage('assets/titleBoat.png');
   instructions = loadImage('assets/instrucciones.png');
   obstacle = loadImage('assets/obstacle.png');
+  lifeStatus4 = loadImage('assets/lifeStatus1.png');
+  lifeStatus3 = loadImage('assets/lifeStatus4.png');
+  lifeStatus2 = loadImage('assets/lifeStatus3.png');
+  lifeStatus1 = loadImage('assets/lifeStatus2.png');
+  redEnemyBoat = loadImage('assets/enemyBoat.png');
+  
 }
 
 function setup() {
@@ -106,8 +113,15 @@ function startDisplay() {
 }
 
 function mainGame() {
-  /* beach.showObstacle(obstacle, 500, 500, 200, 200);
-  beach.showObstacle(obstacle, 800, 100, 100, 100); */
+  
+  if (boatLive != 0) {
+    let lifebar = new lifeBar(FirstGameBoat.x, FirstGameBoat.y);
+    lifebar.show(lifeStatus4, lifeStatus3, lifeStatus2, lifeStatus1, boatLive);
+    FirstGameBoat.show();
+    FirstGameBoat.move();
+    FirstGameEnemy.show(redEnemyBoat);
+    FirstGameEnemy.move();
+    enemyShoot();
 
   // Arreglos del proyectil del barco y sus funciones.
   for (let i = 0; i < FirstGameProyectiles.length; i++) {
@@ -132,8 +146,6 @@ function mainGame() {
     }
   }
   // Arreglo del proyectil del enemigo y sus funciones.
-  /*  let lifePercentage = [];WWWWWWWWW
-   let lifeCounter = []; */
 
   for (let e = 0; e < FirstGameProyectilesEnemy.length; e++) {
     FirstGameProyectilesEnemy[e].show();
@@ -141,43 +153,41 @@ function mainGame() {
 
     if (FirstGameProyectilesEnemy[e].hits(FirstGameBoat)) {
       FirstGameProyectilesEnemy[e].gone();
+      if (boatLive>0) {
+        boatLive--;
+      }
+      console.log(" vidas: "+ boatLive);
     }
     if (FirstGameProyectilesEnemy[e].bye) {
       FirstGameProyectilesEnemy.splice(e, 1);
-      /* console.log("crash"); */
     }
-    /* 
-        let obj3 = new ProyectilEnemy(FirstGameEnemy.x, FirstGameEnemy.y);
-        lifePercentage.push(obj3);
-        console.log("arreglo de vidas: " + lifePercentage.length);
-      }
-    
-      if (lifePercentage.length > 2) {
-        fill(0);
-        square(500, 500, 1000);
-      } */
   }
  
-  blueFlag.show();//Llamar bandera
-  blueFlag.crash(FirstGameBoat);//Chocar con bandera
-  FirstGameBoat.show();
-  FirstGameBoat.move();
-  FirstGameEnemy.show();
-  FirstGameEnemy.move();
-
-
-  /* console.log(mouseX, mouseY); */
-
+  //blueFlag.show();//Llamar bandera
+ // blueFlag.crash(FirstGameBoat);//Chocar con bandera
+  } else {
+    FirstGameRestart();
+  }
 
 }
 function mouseClicked() {
   //Proyectil del barco:creación.
   let obj = new Proyectil(FirstGameBoat.x + 100, FirstGameBoat.y + 100, FirstGameBoat.mode);
   FirstGameProyectiles.push(obj);
-  /* console.log(FirstGameProyectiles.length); */
+}
 
-  //Proyectil del enemigo:creación.
-  let obj2 = new ProyectilEnemy(FirstGameEnemy.x, FirstGameEnemy.y);
-  FirstGameProyectilesEnemy.push(obj2);
-  /* console.log(FirstGameProyectilesEnemy.length); */
+//Enemigo dispara
+function enemyShoot() {
+  if (screenCounter === 2 && FirstGameEnemy.x % 120 == 0) {
+    let obj2 = new ProyectilEnemy(FirstGameEnemy.x+30, FirstGameEnemy.y+50);
+    FirstGameProyectilesEnemy.push(obj2);
+   }
+}
+
+function FirstGameRestart() {
+    boatLive = 4;
+    console.log("restart");
+    FirstGameBoat.crash();
+    FirstGameProyectiles = [];
+    FirstGameProyectilesEnemy = [];
 }

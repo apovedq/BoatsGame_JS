@@ -4,11 +4,11 @@ function Enemy() {
         this.dir = true;
     
 
-    this.show = function () {
+    this.show = function (boat) {
         
         /*if (this.x > 0) { this.x++; }
         if (this.x < 1280) { this.x--;}*/
-        circle(this.x, this.y, 100);
+        image(boat, this.x-50, this.y-100);
     }
 
     this.move = function () {
@@ -24,6 +24,8 @@ function Enemy() {
             this.dir = false;
         }
     }
+
+    this.getX = function () {return this.x}
 
     /* getX() { return this.x; }
     getY() { return this.y; } */
