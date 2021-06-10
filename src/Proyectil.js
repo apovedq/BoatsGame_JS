@@ -40,6 +40,9 @@ function Proyectil(x, y, dir) {
         this.bye = true;
     }
 
+    this.getX = function () { return this.x }
+    this.getY = function () { return this.y }
+
 
 }
 

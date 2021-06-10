@@ -4,6 +4,9 @@ class Intro {
         this.xRocket = -120;
         this.yRocket = -120;
         this.x = 0;
+        this.winAnimationX = 1280 / 2;
+        this.winAnimationY = 100;
+
     }
 
     display(counter, rocket, title, boat) {
@@ -48,4 +51,9 @@ class Intro {
         this.display(counter, rocket, title, boat);
         this.buttonsDisplay(counter);
     }
+
+    winGameOne(img1, gif1) {
+        image(img1, this.winAnimationX, this.winAnimationY);
+        image(gif1, this.winAnimationX+100, this.winAnimationY+100)
+     }
 } 

@@ -21,6 +21,7 @@ function Boat() {
                 image(img1L, this.x, this.y);
         }
     }
+
     this.move = function () {
 
         let speed = 3;
@@ -80,5 +81,16 @@ function Boat() {
         this.x = 0;
         this.y = 300;
 
+    }
+
+    this.restriction = function () {
+        if (this.x < -50) { this.x =-50; }
+        if (this.y < -50) { this.y = -50; }
+        if (this.y > 680) { this.y = 680; }
+        
+    }
+
+    this.setX = function (x) {
+        this.x = x;
     }
 }

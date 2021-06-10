@@ -20,12 +20,13 @@ function Enemy() {
             this.dir = true;
         }
 
-        if (this.x > 1280) {
+        if (this.x > 1100) {
             this.dir = false;
         }
     }
 
-    this.getX = function () {return this.x}
+    this.getX = function () { return this.x }
+    this.getY = function () { return this.y }
 
     /* getX() { return this.x; }
     getY() { return this.y; } */
