@@ -4,9 +4,9 @@ let FirstGameEnemy = new Enemy();
 let FirstGameProyectiles = [];
 let FirstGameProyectilesEnemy = [];
 let obstaculos = [];
-//let beach = new Beach();
 let intro = new Intro();
 let screenCounter = 0;
+let blueFlag = new BlueFlag();
 //Pantalla 0 = titulo
 //Pantalla 1 = instrucciones
 //Pantalla 2 = start;
@@ -132,8 +132,8 @@ function mainGame() {
     }
   }
   // Arreglo del proyectil del enemigo y sus funciones.
-  let lifePercentage = [];
-  let lifeCounter = [];
+  /*  let lifePercentage = [];WWWWWWWWW
+   let lifeCounter = []; */
 
   for (let e = 0; e < FirstGameProyectilesEnemy.length; e++) {
     FirstGameProyectilesEnemy[e].show();
@@ -144,32 +144,32 @@ function mainGame() {
     }
     if (FirstGameProyectilesEnemy[e].bye) {
       FirstGameProyectilesEnemy.splice(e, 1);
-      console.log("crash");
+      /* console.log("crash"); */
     }
-
-    let obj3 = new ProyectilEnemy(FirstGameEnemy.x, FirstGameEnemy.y);
-    lifePercentage.push(obj3);
-    console.log("arreglo de vidas: " + lifePercentage.length);
+    /* 
+        let obj3 = new ProyectilEnemy(FirstGameEnemy.x, FirstGameEnemy.y);
+        lifePercentage.push(obj3);
+        console.log("arreglo de vidas: " + lifePercentage.length);
+      }
+    
+      if (lifePercentage.length > 2) {
+        fill(0);
+        square(500, 500, 1000);
+      } */
   }
-
-  if (lifePercentage.length > 2) {
-    fill(0);
-    square(500, 500, 1000);
-  }
-
+ 
+  blueFlag.show();//Llamar bandera
+  blueFlag.crash(FirstGameBoat);//Chocar con bandera
   FirstGameBoat.show();
   FirstGameBoat.move();
   FirstGameEnemy.show();
   FirstGameEnemy.move();
 
+
+  /* console.log(mouseX, mouseY); */
+
+
 }
-
-//FirstGameBoat.crash(500, 500);
-//FirstGameBoat.crash(800, 100);
-/* console.log(mouseX, mouseY); */
-
-
-
 function mouseClicked() {
   //Proyectil del barco:creación.
   let obj = new Proyectil(FirstGameBoat.x + 100, FirstGameBoat.y + 100, FirstGameBoat.mode);
@@ -181,6 +181,3 @@ function mouseClicked() {
   FirstGameProyectilesEnemy.push(obj2);
   /* console.log(FirstGameProyectilesEnemy.length); */
 }
-
-
-
