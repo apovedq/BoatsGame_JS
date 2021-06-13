@@ -15,12 +15,16 @@ function ProyectilEnemy(x, y) {
         this.y = this.y + 2;
     }
 
+    this.moveSecondGame = function (velocidad) {
+        this.x = this.x - velocidad;
+    }
+
     /* this.getX = function () { return this.x }
     this.getY = function () { return this.y} */
 
     this.hits = function (Boat) {
         let d = dist(this.x, this.y, Boat.x + 150, Boat.y + 150);
-        if (d < this.r + Boat.r) {
+        if (d < this.r + Boat.r){
             return true;
         } else {
             return false;
@@ -52,7 +56,29 @@ function ProyectilEnemy(x, y) {
             return false;
         }
     }
+
+    this.hitsSecondLevel = function (Boat) {
+        let d = dist(this.x , this.y, Boat.x+100 , Boat.y +100 );
+        if (d < this.r + Boat.r + 40){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+
     this.gone = function () {
         this.bye = true;
     }
+
+    this.wallHits = function (wallX, wallY) {
+        let d = dist(this.x, this.y, wallX, wallY);
+        if (d < this.r + 100){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

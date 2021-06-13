@@ -3,6 +3,7 @@ function Boat(x, y, mode) {
     this.y = y;
     this.r = 80;
     this.mode = mode;
+    this.comida = 0;
 
     this.show = function () {
         /* fill(255, 255, 0); */
@@ -97,6 +98,7 @@ function Boat(x, y, mode) {
         
     }
     this.crash = function () {
+
         this.x = 0;
         this.y = 500;
 
@@ -117,5 +119,17 @@ function Boat(x, y, mode) {
     this.setX = function (x) {
         this.x = x;
     }
-    
+
+    this.setY= function (y) {
+       this.y = y; 
+    } 
+
+    this.crashWall = function (x, y) {
+        var d = dist(this.x + 100, this.y + 100, x - 120, y - 40);
+        if (d < 100) {dist(this.x + 100, this.y + 100, x - 120, y - 40);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
