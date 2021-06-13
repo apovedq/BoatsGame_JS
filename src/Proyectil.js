@@ -28,6 +28,24 @@ function Proyectil(x, y, dir) {
                 this.y = this.y + 2;
         }
     }
+
+    this.moveSecondGame = function () {
+        //this.x = this.x - 2;
+
+        switch (dir) {
+            case 0:
+                this.x = this.x - 9;
+                break;
+            case 1:
+                this.x = this.x + 9;
+                break;
+            case 2:
+                this.y = this.y - 9;
+                break;
+            case 3:
+                this.y = this.y + 9;
+        }
+    }
     this.hits = function (Obstaculo) {
         let d = dist(this.x, this.y, Obstaculo.x+150, Obstaculo.y+150);
         if (d < this.r + Obstaculo.r){
