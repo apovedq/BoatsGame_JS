@@ -1,16 +1,15 @@
-class BlueFlag {
-
-
+class Flag2 {
     constructor() {
-        this.x = 100;
-        this.y = 100;
-        this.r = 100;
+        this.x = 960;
+        this.y = 460;
+        this.r = 50;
         this.atrapado = false;
     }
 
     show() {
-        fill(0);
-        circle(this.x, this.y, this.r);
+        image(redflag, this.x, this.y);
+        /* fill(0);
+        circle(this.x, this.y, this.r); */
     }
 
     crash(boat) {
@@ -22,9 +21,9 @@ class BlueFlag {
         }
         
         if (this.atrapado === true) {
-            this.x = 100;
-            this.y = 600;
-            this.r = 300;
+            this.x = 200;
+            this.y = 650;
+            this.r = 50;
             console.log(boat.x, boat.y);
         } 
     }

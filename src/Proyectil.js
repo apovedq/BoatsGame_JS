@@ -28,13 +28,32 @@ function Proyectil(x, y, dir) {
                 this.y = this.y + 2;
         }
     }
-    this.hits = function (Obstaculo) {
-        let d = dist(this.x, this.y, Obstaculo.x+150, Obstaculo.y+150);
-        if (d < this.r + Obstaculo.r){
+    this.hits= function (Obstaculo) {
+        let d = dist(this.x, this.y, 550, 500);
+        if (d < this.r + Obstaculo.r) {
             return true;
-        }else{
+        } else {
             return false;
         }
+        
+    }
+    this.hits2 = function (Obstaculo) {
+        let d = dist(this.x, this.y, 150, 200);
+        if (d < this.r + Obstaculo.r) {
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+    this.hits3 = function (Obstaculo) {
+        let d = dist(this.x, this.y, 900, 200);
+        if (d < this.r + Obstaculo.r) {
+            return true;
+        } else {
+            return false;
+        }
+        
     }
     this.gone = function () {
         this.bye = true;

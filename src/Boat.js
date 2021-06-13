@@ -1,13 +1,13 @@
-function Boat() {
-    this.x = 0;
-    this.y = 300;
-
+function Boat(x, y, mode) {
+    this.x = x;
+    this.y = y;
     this.r = 80;
-    this.mode = 2;
+    this.mode = mode;
 
     this.show = function () {
         /* fill(255, 255, 0); */
         switch (this.mode) {
+            
             case 0:
                 image(img1U, this.x, this.y);
                 break;
@@ -69,28 +69,53 @@ function Boat() {
         }
     }
 
-    this.hits = function (Obstaculo) {
-        var d = dist(this.x, this.y, Obstaculo.x, Obstaculo.y);
+    this.hits= function (Obstaculo) {
+        let d = dist(this.x, this.y, 450, 400);
         if (d < this.r + Obstaculo.r) {
             return true;
         } else {
             return false;
         }
+        
+    }
+    this.hits2 = function (Obstaculo) {
+        let d = dist(this.x, this.y, 45, 100);
+        if (d < this.r + Obstaculo.r) {
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+    this.hits3 = function (Obstaculo) {
+        let d = dist(this.x, this.y, 800, 100);
+        if (d < this.r + Obstaculo.r) {
+            return true;
+        } else {
+            return false;
+        }
+        
     }
     this.crash = function () {
         this.x = 0;
-        this.y = 300;
+        this.y = 500;
+
+    }
+    this.crash2 = function () {
+        this.x = 125;
+        this.y = 80;
 
     }
 
     this.restriction = function () {
-        if (this.x < -50) { this.x =-50; }
+        if (this.x < -50) { this.x = -50; }
         if (this.y < -50) { this.y = -50; }
         if (this.y > 680) { this.y = 680; }
-        
+
     }
 
     this.setX = function (x) {
         this.x = x;
     }
+    
 }
