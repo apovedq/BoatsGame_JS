@@ -1,15 +1,22 @@
 function Enemy(number) {
+     if (number == 4) {
+        this.y = 90;
+         this.x = 300;
+         this.side = true;
+    }
     if (number == 1) {
         this.y = 0;
         this.x = 0;
         this.dir = true;
         this.advance = true;
-    } else {
+    }
+    if (number == 2 || number == 3) {
         this.y = 40;
         this.x = 1200;
         this.dir = true;
         this.advance = true;
-    }
+    } 
+    
         /* this.y = 0;
         this.x = 0;
     this.dir = true;
@@ -72,6 +79,21 @@ function Enemy(number) {
         }*/
     }
 
+    this.CaminoLevelMove = function() {
+        if (this.x === 300) {
+            this.side = false;
+        }
+
+        if (this.x === 400) {
+            this.side = true;
+        }
+        
+        if (this.side === false) {
+            this.x++;
+        } else {
+            this.x--;
+        }
+    }
     this.getX = function () { return this.x }
     this.getY = function () { return this.y }
     this.getSpeed = function () { return this.velocidad }
