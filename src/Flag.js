@@ -27,6 +27,7 @@ class Flag {
             this.y = 650;
             this.r = 50;
             console.log(boat.x, boat.y);
+            greenflag.resize(150, 0);
         } 
     }
 

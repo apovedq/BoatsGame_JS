@@ -36,7 +36,6 @@ function ProyectilEnemy(x, y) {
 
     this.hits = function (Boat) {
         let d = dist(this.x, this.y, Boat.x + 150, Boat.y + 150);
-        circle(Boat.x + 150, Boat.y + 150, this.r + Boat.r );
         if (d < this.r + Boat.r){
             return true;
         } else {

@@ -10,20 +10,30 @@ let CaminoGameEnemy = new Enemy(4);
 let CaminoGameEnemy2 = new Enemy(4);
 let FirstGameProyectiles = [];
 let SecondGameProyectiles = [];
+let ThirdGameProyectiles = [];
 let CaminoGameProyectiles = [];
 let FirstGameProyectilesEnemy = [];
 let SecondGameProyectilesEnemy = [];
+let ThirdGameProyectilesEnemy = [];
 let CaminoGameProyectilesEnemy = [];
 let CaminoGameProyectilesEnemy2 = [];
 let obstaculos = [];
+let obstaculos2 = [];
 let intro = new Intro();
-let screenCounter = 5;
+
+let screenCounter = 4;
+
 let greenFlag = new Flag();
 let redFlag = new Flag2();
 let secondGame = new SecondGame();
 let boatLive = 4;
 let enemyLive = 4;
+let boatLive2 = 4;
+let enemyLive2 = 4;
 let firstGameCheck = false;
+let thirdGameCheck = false;
+let thirdGameUserLife = 4;
+let thirdGameEnemyLife = 4;
 let = winAnimationX = 0;
 let = winAnimationY = 300;
 
@@ -64,6 +74,8 @@ function preload() {
   greenflag = loadImage('assets/GREENFLAG.png');
   wallImage = loadImage('assets/wallLevel2.png');
   caminoImg = loadImage('assets/2DOWN.gif');
+  greenEnemyBoat = loadImage('assets/enemygreen.png');
+
 }
 
 function setup() {
@@ -72,6 +84,10 @@ function setup() {
   for (let j = 0; j < 3; j++) {
     obstaculos[j] = new Obstaculo(obstacle, j * 400 + 150, j * 300 + 200);
     if (j > 1) { obstaculos[2] = new Obstaculo(obstacle, 900, 200); }
+  }
+  for (let j = 0; j < 3; j++) {
+    obstaculos2[j] = new Obstaculo(obstacle, j * 400 + 150, j * 300 + 200);
+    if (j > 1) { obstaculos2[2] = new Obstaculo(obstacle, 900, 200); }
   }
 
   finalLine = function () { image(firstGameFinalLine, 1200, 0); }
@@ -115,15 +131,15 @@ function draw() {
 
 function instructionsDisplay(instructions) {
   image(instructions, 0, 0);
-      fill(255, 204, 0);
-      strokeWeight(7);
-      stroke(255);
-      rect(550, 620, 200, 50, 50);
-      noStroke();
-      textSize(30);
-      fill(255, 0, 0);
-      text('Volver', 610, 655);
-      fill(255);
+  fill(255, 204, 0);
+  strokeWeight(7);
+  stroke(255);
+  rect(550, 620, 200, 50, 50);
+  noStroke();
+  textSize(30);
+  fill(255, 0, 0);
+  text('Volver', 610, 655);
+  fill(255);
 };
 
 //Funcion para cambio de pantalla
@@ -132,6 +148,7 @@ function mousePressed() {
   instructionsDisplay();
   goSecondLevel();
   goThirdLevel();
+  goFourthLevel();
 }
 
 //Pasar de pantalla principal a instrucciones.
@@ -229,7 +246,7 @@ function mainGame() {
             if (boatLive > 0) {
               boatLive--;
             }
-          
+
           }
           if (FirstGameProyectilesEnemy[e].bye) {
             FirstGameProyectilesEnemy.splice(e, 1);
@@ -256,7 +273,104 @@ function mainGame() {
 
   }
 }
+function captureTheFlag() {
+  if (screenCounter === 4) {
+    finalLine();
+    ThirdGameWin(FlagBoat.x, 1200);
+    if (boatLive != 0) {
+      let lifebar = new lifeBar(FlagBoat.x, FlagBoat.y);
+      let enemyLifebar = new lifeBar(ThirdGameEnemy.getX() - 50, ThirdGameEnemy.getY() - 100);
+      lifebar.show(lifeStatus4, lifeStatus3, lifeStatus2, lifeStatus1, boatLive);
+      FlagBoat.show();
+      if (thirdGameCheck === false) {
+        FlagBoat.restriction();
+      } else {
+        FlagBoat.setX(5000);
+      }
+      FlagBoat.move();
+      if (enemyLive2 != 0) {
+        ThirdGameEnemy.show(greenEnemyBoat);
+        ThirdGameEnemy.move();
+        enemyShoot();
+        enemyLifebar.show(lifeStatus4, lifeStatus3, lifeStatus2, lifeStatus1, enemyLive);
 
+      }
+      // Arreglos del proyectil del barco y sus funciones.
+      if (thirdGameCheck === false) {
+        for (let i = 0; i < ThirdGameProyectiles.length; i++) {
+          ThirdGameProyectiles[i].show();
+          ThirdGameProyectiles[i].move(FlagBoat);
+          for (var j = 0; j < obstaculos.length; j++) {
+            if (ThirdGameProyectiles[i].hits(obstaculos2[j]) || ThirdGameProyectiles[i].hits2(obstaculos2[j]) || ThirdGameProyectiles[i].hits3(obstaculos2[j])) {
+              ThirdGameProyectiles[i].gone();
+            }
+
+            if (dist(ThirdGameProyectiles[i].x, ThirdGameProyectiles[i].y, ThirdGameEnemy.x, ThirdGameEnemy.y) < 100) {
+              if (enemyLive > 0) {
+                enemyLive--;
+                console.log(enemyLive)
+                ThirdGameProyectiles.splice(i, 1);
+              }
+            }
+
+          }
+
+          if (ThirdGameProyectiles[i].bye) {
+            ThirdGameProyectiles.splice(i, 1);
+          }
+        }
+      } else { }
+
+      //Arreglo de Barco chocando con Isla.
+
+      for (var j = 0; j < obstaculos.length; j++) {
+        imageMode(CENTER);
+        obstaculos2[j].show();
+        if (FlagBoat.hits(obstaculos2[j]) || FlagBoat.hits2(obstaculos2[j]) || FlagBoat.hits3(obstaculos2[j])) {
+          console.log("crash")
+          FlagBoat.crash();
+        }
+      }
+      // Arreglo del proyectil del enemigo y sus funciones.
+
+      if (firstGameCheck === false) {
+        for (let e = 0; e < ThirdGameProyectilesEnemy.length; e++) {
+          ThirdGameProyectilesEnemy[e].show();
+          ThirdGameProyectilesEnemy[e].move(ThirdGameEnemy);
+
+          if (ThirdGameProyectilesEnemy[e].hits(FlagBoat)) {
+            ThirdGameProyectilesEnemy[e].gone();
+            if (boatLive > 0) {
+              boatLive--;
+            }
+            //console.log(" vidas: " + boatLive);
+          }
+          if (ThirdGameProyectilesEnemy[e].bye) {
+            ThirdGameProyectilesEnemy.splice(e, 1);
+          }
+        }
+      } else { }
+
+      greenFlag.show();//Llamar bandera
+      greenFlag.crash(FlagBoat);//Chocar con bandera
+      redFlag.show();//Llamar bandera
+      redFlag.crash(FlagBoat);//Chocar con bandera
+    } else {
+      FirstGameRestart();
+    }
+  }
+  if (thirdGameCheck === true && screenCounter == 4) {
+    fill(255, 70);
+    rect(winAnimationX + 430, winAnimationY + 480, 430, 700);
+    noFill();
+    imageMode(CORNER);
+    image(winGif, winAnimationX, winAnimationY + 5)
+    image(winImage, winAnimationX, winAnimationY);
+    winAnimationY -= 10;
+    if (winAnimationY < 0) { winAnimationY = 0; }
+  }
+
+}
 //Funcion disparo usuario.
 function mouseClicked() {
   //Proyectil del barco:creación.
@@ -271,7 +385,12 @@ function mouseClicked() {
       SecondGameProyectiles.push(obj);
     }
   }
-
+  if (thirdGameUserLife > 0) {
+    if (screenCounter === 4) {
+      let obj = new Proyectil(FlagBoat.x + 100, FlagBoat.y + 100, FlagBoat.mode);
+      ThirdGameProyectiles.push(obj);
+    }
+  }
   //pasar de pantalla 2 a 3 habiendo perdido en la 2.
   let secondGameloss = false;
   if (screenCounter === 2 && secondGameloss === true) {
@@ -282,7 +401,7 @@ function mouseClicked() {
   }
 
   if (screenCounter === 5) {
-    let obj = new Proyectil(CaminoGameBoat.x , CaminoGameBoat.y , CaminoGameBoat.mode);
+    let obj = new Proyectil(CaminoGameBoat.x, CaminoGameBoat.y, CaminoGameBoat.mode);
     CaminoGameProyectiles.push(obj);
   }
 
@@ -310,6 +429,10 @@ function enemyShoot() {
   if (screenCounter === 3 && frameCount % 30 == 0) {
     let obj7 = new ProyectilEnemy(SecondGameEnemy.x + 30, SecondGameEnemy.y + 50);
     SecondGameProyectilesEnemy.push(obj7);
+  }
+  if (screenCounter === 4 && ThirdGameEnemy.x > 400 && ThirdGameEnemy.x < 700 && ThirdGameEnemy.x % 30 == 0) {
+    let obj2 = new ProyectilEnemy(ThirdGameEnemy.x + 30, ThirdGameEnemy.y + 50, 6);
+    ThirdGameProyectilesEnemy.push(obj2);
   }
 
   if (screenCounter === 5 && frameCount % 137 == 0) {
@@ -342,7 +465,12 @@ function firstGameWin(x1, x2) {
     return x1 = 1000;
   }
 }
-
+function ThirdGameWin(x1, x2) {
+  if (x1 > x2) {
+    thirdGameCheck = true;
+    return x1 = 1000;
+  }
+}
 //Funcion para ir al siguiente nivel
 function goSecondLevel() {
   if (dist(mouseX, mouseY, 640, 440) < 50 && firstGameCheck === true) {
@@ -353,11 +481,18 @@ function goSecondLevel() {
 
 //Funcion para ir al siguiente nivel.
 function goThirdLevel() {
-  if (dist(mouseX, mouseY, 640, 440) < 50 && screenCounter === 3  && secondGameCheck === true) {
+  if (dist(mouseX, mouseY, 640, 440) < 50 && screenCounter === 3 && secondGameCheck === true) {
     screenCounter = 4;
     secondGameCheck = false;
   }
 }
+function goFourthLevel() {
+  if (dist(mouseX, mouseY, 640, 440) < 50 && screenCounter === 4 && ThirdGamewin === true) {
+    screenCounter = 5;
+    ThirdGameCheck = false;
+  }
+}
+
 
 
 let wallX = [];
@@ -453,8 +588,8 @@ function secondLevel() {
       lifebar.show(lifeStatus4, lifeStatus3, lifeStatus2, lifeStatus1, secondGameUserLife);
 
     } else {
-      SecondGameProyectiles = [];
-      SecondGameProyectilesEnemy = [];
+      /* SecondGameProyectiles = [];
+      SecondGameProyectilesEnemy = []; */
     }
 
     if (secondGameEnemyLife > 0) {
@@ -550,106 +685,7 @@ function shootWall(i, array, wallX, wallY, number) {
   }
 }
 
-function captureTheFlag() {
-  if (screenCounter === 4) {
-    finalLine();
-    firstGameWin(FlagBoat.x, 1200);
-    if (boatLive != 0) {
-      let lifebar = new lifeBar(FlagBoat.x, FlagBoat.y);
-      let enemyLifebar = new lifeBar(ThirdGameEnemy.getX() - 50, ThirdGameEnemy.getY() - 100);
-      lifebar.show(lifeStatus4, lifeStatus3, lifeStatus2, lifeStatus1, boatLive);
-      FlagBoat.show();
-      if (firstGameCheck === false) {
-        FlagBoat.restriction();
-      } else {
-        FlagBoat.setX(5000);
-      }
-      FlagBoat.move();
-      if (enemyLive != 0) {
-        ThirdGameEnemy.show(redEnemyBoat);
-        ThirdGameEnemy.move();
-        enemyShoot();
-        enemyLifebar.show(lifeStatus4, lifeStatus3, lifeStatus2, lifeStatus1, enemyLive);
 
-      }
-      // Arreglos del proyectil del barco y sus funciones.
-      if (firstGameCheck === false) {
-        for (let i = 0; i < FirstGameProyectiles.length; i++) {
-          FirstGameProyectiles[i].show();
-          FirstGameProyectiles[i].move(FirstGameBoat);
-          for (var j = 0; j < obstaculos.length; j++) {
-            if (FirstGameProyectiles[i].hits(obstaculos[j]) || FirstGameProyectiles[i].hits2(obstaculos[j]) || FirstGameProyectiles[i].hits3(obstaculos[j])) {
-              FirstGameProyectiles[i].gone();
-            }
-
-            if (dist(FirstGameProyectiles[i].x, FirstGameProyectiles[i].y, ThirdGameEnemy.x, ThirdGameEnemy.y) < 100) {
-              if (enemyLive > 0) {
-                enemyLive--;
-                console.log(enemyLive)
-                FirstGameProyectiles.splice(i, 1);
-              }
-            }
-
-          }
-
-          if (FirstGameProyectiles[i].bye) {
-            FirstGameProyectiles.splice(i, 1);
-          }
-        }
-      } else { }
-
-      //Arreglo de Barco chocando con Isla.
-
-      for (var j = 0; j < obstaculos.length; j++) {
-        imageMode(CENTER);
-        obstaculos[j].show();
-        if (FlagBoat.hits(obstaculos[j]) || FlagBoat.hits2(obstaculos[j]) || FlagBoat.hits3(obstaculos[j])) {
-          console.log("crash")
-          FlagBoat.crash();
-        }
-      }
-      // Arreglo del proyectil del enemigo y sus funciones.
-
-      if (firstGameCheck === false) {
-        for (let e = 0; e < FirstGameProyectilesEnemy.length; e++) {
-          FirstGameProyectilesEnemy[e].show();
-          FirstGameProyectilesEnemy[e].move(ThirdGameEnemy);
-
-          if (FirstGameProyectilesEnemy[e].hits(FlagBoat)) {
-            FirstGameProyectilesEnemy[e].gone();
-            if (boatLive > 0) {
-              boatLive--;
-            }
-            //console.log(" vidas: " + boatLive);
-          }
-          if (FirstGameProyectilesEnemy[e].bye) {
-            FirstGameProyectilesEnemy.splice(e, 1);
-          }
-        }
-      } else { }
-
-      greenFlag.show();//Llamar bandera
-      greenFlag.crash(FlagBoat);//Chocar con bandera
-      redFlag.show();//Llamar bandera
-      redFlag.crash(FlagBoat);//Chocar con bandera
-    } else {
-      FirstGameRestart();
-    }
-
-    //Win animation
-   /* if (firstGameCheck === true) {
-      fill(255, 70);
-      rect(winAnimationX + 430, winAnimationY + 480, 430, 700);
-      noFill();
-      imageMode(CORNER);
-      image(winGif, winAnimationX, winAnimationY + 5)
-      image(winImage, winAnimationX, winAnimationY);
-      winAnimationY -= 10;
-      if (winAnimationY < 0) { winAnimationY = 0; }
-    }*/
-
-  }
-}
 
 let CaminoGameUserLife = 4;
 let CaminoGameEnemyLife = 4;
@@ -660,8 +696,8 @@ function caminoGame() {
 
   followThePath();
 
-  
-     
+
+
   image(caminoBackground, 0, 0);
   if (screenCounter === 5) {
     CaminoGameEnemy.show(caminoImg);
@@ -674,11 +710,11 @@ function caminoGame() {
       for (let e = 0; e < CaminoGameProyectilesEnemy.length; e++) {
         CaminoGameProyectilesEnemy[e].show();
         CaminoGameProyectilesEnemy[e].move();
-      
+
         if (CaminoGameProyectilesEnemy[e].y > 650) {
           CaminoGameProyectilesEnemy.splice(e, 1);
         }
-      
+
         if (CaminoGameProyectilesEnemy[e].hitsCamino(CaminoGameBoat)) {
           CaminoGameUserLife--;
           CaminoGameProyectilesEnemy.splice(e, 1);
@@ -688,7 +724,7 @@ function caminoGame() {
       //Dispara cañon negro 
       for (let e = 0; e < CaminoGameProyectilesEnemy2.length; e++) {
         CaminoGameProyectilesEnemy2[e].showCanion();
-      
+
         if (CaminoGameProyectilesEnemy2[e].y < 0) {
           CaminoGameProyectilesEnemy2.splice(e, 1);
         }
@@ -699,23 +735,23 @@ function caminoGame() {
         }
       }
     } else { }
-    
 
 
-    
-      let lifebar = new lifeBar(CaminoGameBoat.x-20, CaminoGameBoat.y-50);
-      imageMode(CENTER);
-      lifebar.show(lifeStatus4, lifeStatus3, lifeStatus2, lifeStatus1, CaminoGameUserLife);
 
-      CaminoGameBoat.show();
-      if (firstGameCheck === false) {
-        CaminoGameBoat.restriction();
-      } else {
-        CaminoGameBoat.setX(5000);
+
+    let lifebar = new lifeBar(CaminoGameBoat.x - 20, CaminoGameBoat.y - 50);
+    imageMode(CENTER);
+    lifebar.show(lifeStatus4, lifeStatus3, lifeStatus2, lifeStatus1, CaminoGameUserLife);
+
+    CaminoGameBoat.show();
+    if (firstGameCheck === false) {
+      CaminoGameBoat.restriction();
+    } else {
+      CaminoGameBoat.setX(5000);
     }
     if (CaminoGameCheck === false) {
       CaminoGameBoat.move();
-    } else {CaminoGameBoat.y++; }
+    } else { CaminoGameBoat.y++; }
 
     console.log(mouseX, mouseY)
     if (CaminoGameBoat.x > 1000 && CaminoGameBoat.y > 400) {
@@ -727,13 +763,13 @@ function caminoGame() {
       CaminoGameBoat.setX(125);
       CaminoGameBoat.setY(80);
       CaminoGameUserLife = 4;
-     }
-    
+    }
+
     /*for (let i = 0; i < CaminoGameProyectiles.length; i++) {
       CaminoGameProyectiles[i].show();
       CaminoGameProyectiles[i].move(CaminoGameBoat);
     }*/
-      //Limites del camino ladrillos.
+    //Limites del camino ladrillos.
   }
 }
 
