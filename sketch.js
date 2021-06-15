@@ -21,7 +21,7 @@ let obstaculos = [];
 let obstaculos2 = [];
 let intro = new Intro();
 
-let screenCounter = 4;
+let screenCounter = 0;
 
 let greenFlag = new Flag();
 let redFlag = new Flag2();
@@ -70,6 +70,8 @@ function preload() {
   winGif = loadImage('assets/ganasteAnimacion.gif');
   winImage2 = loadImage('assets/ganasteDos.png');
   winImage = loadImage('assets/ganaste.png');
+  winImage3 = loadImage('assets/ganasteCuatro.png');
+  winImage4 = loadImage('assets/ganasteCinco.png');
   redflag = loadImage('assets/REDFLAG.png');
   greenflag = loadImage('assets/GREENFLAG.png');
   wallImage = loadImage('assets/wallLevel2.png');
@@ -98,11 +100,10 @@ function draw() {
   //Sea background
   imageMode(CORNER);
   image(backGround, 0, 0);
+  addCounter();
+  
 
   //Contador
-  textSize(48);
-  addCounter();
-  text(counter, 20, 50);
 
   switch (screenCounter) {
     //Introduccion
@@ -140,7 +141,7 @@ function instructionsDisplay(instructions) {
   fill(255, 0, 0);
   text('Volver', 610, 655);
   fill(255);
-};
+}
 
 //Funcion para cambio de pantalla
 function mousePressed() {
@@ -149,7 +150,10 @@ function mousePressed() {
   goSecondLevel();
   goThirdLevel();
   goFourthLevel();
+  backToBasic();
 }
+
+
 
 //Pasar de pantalla principal a instrucciones.
 function instructionsDisplay() {
@@ -173,6 +177,8 @@ function startDisplay() {
     console.log("vuelta al menu principal");
   }
 }
+
+
 
 //Funcion para ejecutar primer juego
 function mainGame() {
@@ -277,10 +283,9 @@ function captureTheFlag() {
   if (screenCounter === 4) {
     finalLine();
     ThirdGameWin(FlagBoat.x, 1200);
-    if (boatLive != 0) {
       let lifebar = new lifeBar(FlagBoat.x, FlagBoat.y);
       let enemyLifebar = new lifeBar(ThirdGameEnemy.getX() - 50, ThirdGameEnemy.getY() - 100);
-      lifebar.show(lifeStatus4, lifeStatus3, lifeStatus2, lifeStatus1, boatLive);
+      lifebar.show(lifeStatus4, lifeStatus3, lifeStatus2, lifeStatus1, thirdGameUserLife);
       FlagBoat.show();
       if (thirdGameCheck === false) {
         FlagBoat.restriction();
@@ -292,14 +297,14 @@ function captureTheFlag() {
         ThirdGameEnemy.show(greenEnemyBoat);
         ThirdGameEnemy.move();
         enemyShoot();
-        enemyLifebar.show(lifeStatus4, lifeStatus3, lifeStatus2, lifeStatus1, enemyLive);
+        //.show(lifeStatus4, lifeStatus3, lifeStatus2, lifeStatus1, enemyLive);
 
       }
       // Arreglos del proyectil del barco y sus funciones.
       if (thirdGameCheck === false) {
         for (let i = 0; i < ThirdGameProyectiles.length; i++) {
-          ThirdGameProyectiles[i].show();
-          ThirdGameProyectiles[i].move(FlagBoat);
+          //ThirdGameProyectiles[i].show();
+          //RocketThirdGameProyectiles[i].move(FlagBoat);
           for (var j = 0; j < obstaculos.length; j++) {
             if (ThirdGameProyectiles[i].hits(obstaculos2[j]) || ThirdGameProyectiles[i].hits2(obstaculos2[j]) || ThirdGameProyectiles[i].hits3(obstaculos2[j])) {
               ThirdGameProyectiles[i].gone();
@@ -319,7 +324,14 @@ function captureTheFlag() {
             ThirdGameProyectiles.splice(i, 1);
           }
         }
-      } else { }
+      } else {
+      }
+      
+      if (thirdGameUserLife === 0) {
+        FlagBoat.setX(500);
+        FlagBoat.setY(500);
+        thirdGameUserLife = 4;
+      }
 
       //Arreglo de Barco chocando con Isla.
 
@@ -333,15 +345,15 @@ function captureTheFlag() {
       }
       // Arreglo del proyectil del enemigo y sus funciones.
 
-      if (firstGameCheck === false) {
+      if (thirdGameCheck === false) {
         for (let e = 0; e < ThirdGameProyectilesEnemy.length; e++) {
           ThirdGameProyectilesEnemy[e].show();
           ThirdGameProyectilesEnemy[e].move(ThirdGameEnemy);
 
           if (ThirdGameProyectilesEnemy[e].hits(FlagBoat)) {
             ThirdGameProyectilesEnemy[e].gone();
-            if (boatLive > 0) {
-              boatLive--;
+            if (thirdGameUserLife > 0) {
+              thirdGameUserLife--;
             }
             //console.log(" vidas: " + boatLive);
           }
@@ -355,9 +367,13 @@ function captureTheFlag() {
       greenFlag.crash(FlagBoat);//Chocar con bandera
       redFlag.show();//Llamar bandera
       redFlag.crash(FlagBoat);//Chocar con bandera
-    } else {
-      FirstGameRestart();
-    }
+  } else {
+    FlagBoat.setX(500);
+    FlagBoat.setY(500);
+    thirdGameUserLife = 4;
+    greenFlag.show();//Llamar bandera
+  //Chocar con bandera
+      redFlag.show();//Llamar bandera
   }
   if (thirdGameCheck === true && screenCounter == 4) {
     fill(255, 70);
@@ -365,7 +381,7 @@ function captureTheFlag() {
     noFill();
     imageMode(CORNER);
     image(winGif, winAnimationX, winAnimationY + 5)
-    image(winImage, winAnimationX, winAnimationY);
+    image(winImage3, winAnimationX, winAnimationY);
     winAnimationY -= 10;
     if (winAnimationY < 0) { winAnimationY = 0; }
   }
@@ -430,6 +446,7 @@ function enemyShoot() {
     let obj7 = new ProyectilEnemy(SecondGameEnemy.x + 30, SecondGameEnemy.y + 50);
     SecondGameProyectilesEnemy.push(obj7);
   }
+  
   if (screenCounter === 4 && ThirdGameEnemy.x > 400 && ThirdGameEnemy.x < 700 && ThirdGameEnemy.x % 30 == 0) {
     let obj2 = new ProyectilEnemy(ThirdGameEnemy.x + 30, ThirdGameEnemy.y + 50, 6);
     ThirdGameProyectilesEnemy.push(obj2);
@@ -471,6 +488,14 @@ function ThirdGameWin(x1, x2) {
     return x1 = 1000;
   }
 }
+
+function backToBasic() {
+  if (dist(mouseX, mouseY, 640, 440) < 50 && CaminoGameCheck === true) {
+    screenCounter = 0;
+    CaminoGameCheck = false;
+  }
+}
+
 //Funcion para ir al siguiente nivel
 function goSecondLevel() {
   if (dist(mouseX, mouseY, 640, 440) < 50 && firstGameCheck === true) {
@@ -487,9 +512,9 @@ function goThirdLevel() {
   }
 }
 function goFourthLevel() {
-  if (dist(mouseX, mouseY, 640, 440) < 50 && screenCounter === 4 && ThirdGamewin === true) {
+  if (dist(mouseX, mouseY, 640, 440) < 50 && screenCounter === 4 && thirdGameCheck === true ) {
     screenCounter = 5;
-    ThirdGameCheck = false;
+    thirdGameCheck = false;
   }
 }
 
@@ -765,6 +790,15 @@ function caminoGame() {
       CaminoGameUserLife = 4;
     }
 
+    if (CaminoGameCheck === true) {
+    fill(255, 70);
+    rect(winAnimationX + 430, winAnimationY + 480, 430, 700);
+    noFill();
+    image(winGif, winAnimationX, winAnimationY + 5)
+    image(winImage3, winAnimationX, winAnimationY);
+    winAnimationY -= 10;
+    if (winAnimationY < 0) { winAnimationY = 0; }
+
     /*for (let i = 0; i < CaminoGameProyectiles.length; i++) {
       CaminoGameProyectiles[i].show();
       CaminoGameProyectiles[i].move(CaminoGameBoat);
@@ -808,4 +842,4 @@ function followThePath() {
 
 
 
-
+}

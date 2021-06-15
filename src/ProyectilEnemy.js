@@ -6,7 +6,7 @@ function ProyectilEnemy(x, y) {
     this.bye = false;
 
     this.show = function () {
-        
+        circle(this.x, this.y, 5);
     }
 
     this.move = function () {
